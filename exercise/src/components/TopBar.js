@@ -1,44 +1,26 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
 import Button from './Button';
+import Badge from './Badge';
+import Header from './Header';
 
 export default class TopBar extends Component {
-  state: { loggedIn: false }
   render() {
+    let buttonState;
+    if(!this.props.loggedIn){
+      buttonState =  <div>
+          <Button style={{backgroundColor: 'blue', color: 'white'}} children='Login' handleLoginButtonClick={this.props.handleLoginButtonClick}></Button>
+          <Button style={{backgroundColor: 'red', color: 'white'}} children='Signup'></Button>
+        </div>
+    }else{
+      buttonState = <div>
+        <Badge style={{backgroundColor: '#dcdcdc', color: '#333'}} children='AA' ></Badge>
+        <Button style={{backgroundColor: '#f54336', color: 'white'}} children='Logout' handleLoginButtonClick={this.props.handleLoginButtonClick}></Button>
+      </div>
+    }
     return (
-      <header style={{
-        height:          48,
-        width:           '100%',
-        backgroundColor: 'rgb(102,63,180)',
-        color:           'white',
-        padding:         '6px 10px',
-        display:         'flex',
-        flexDirection:   'row',
-        alignItems:      'center'
-      }}
-      >
-        <div style={styles.logo}>
-          <Link to="/">
-            <img alt={'logo'} style={{ maxHeight: 40, flex: 1}} src="favicon-196x196.png"/>
-          </Link>
-        </div>
-        <div>
-          {'Modus Create'}
-        </div>
-        <div style={{float: 'left', color: 'white', flex: 1}} />
-        <div style={{float: 'right', paddingRight: 20}}>
-          <Button style={{backgroundColor: 'blue', color: 'white'}}>Login</Button>
-          <Button style={{backgroundColor: 'red', color: 'white'}}>Signup</Button>
-        </div>
-      </header>
+      <Header buttons={buttonState} />
     );
   } 
 }
 
-const styles = {
-  logo: {
-    float:  'left',
-    margin: 8
-  }
-};
 

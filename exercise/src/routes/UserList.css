@@ -1,0 +1,11 @@
+.list_wrap {
+    width: 45%;
+    margin: 1% auto;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 5px 5px 0 5px;
+}
+@media only screen and (max-width: 768px) {
+    .list_wrap {
+        width: 90%;
+    }
+}
