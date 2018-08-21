@@ -11,7 +11,7 @@ export default class HomeContent extends Component {
     }
     return (
       <div>
-        <Button children={buttonState} handleLoginButtonClick={this.props.handleLoginButtonClick}></Button>
+        <Button class_name={'login_home_content'} children={buttonState} handleLoginButtonClick={this.props.handleLoginButtonClick}></Button>
       </div>
     );
   }

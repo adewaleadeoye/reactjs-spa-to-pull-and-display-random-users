@@ -23,19 +23,16 @@ export default class UserDetail extends Component {
        loaded_user:null,
        user_loaded:false
     };
-
   }
 
   componentDidMount () {
-    //console.log(this.props);
     this.fetchUser();
   }
 
 
-  fetchUser () {
+  fetchUser = () => {
     if ( this.props.match.params.id ) {
-        const user_data = sessionStorage.getItem(this.props.match.params.id);
-        //console.log(user_data)
+        const user_data = sessionStorage.getItem(this.props.match.params.id);//retrieve user from session storage
         if(user_data){
           this.setState({loaded_user:JSON.parse(user_data)})
           this.setState({user_loaded:true})
@@ -59,7 +56,7 @@ export default class UserDetail extends Component {
     return (
       <div className="App">
         <Header buttons={''} />
-        <Link to={'/user-list/'} style={{...styles.link}}>Back</Link>
+        <Link to={'/users-list/'} style={{...styles.link}}>Back</Link>
         {user}
       </div>
     );

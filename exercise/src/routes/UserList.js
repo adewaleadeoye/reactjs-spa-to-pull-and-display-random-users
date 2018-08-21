@@ -15,61 +15,57 @@ const random_user_country_param = 'nat='+random_user_country;
 const random_user_fields_param = 'inc=name,email,phone,picture,id';
 
 //using sessionstorage to persist data
-const user_list = sessionStorage.getItem(random_user_seed);
-
-// const styles = {
-//   list_wrap:{
-//       width: '45%',
-//       margin: '5% auto',
-//       border: '1px solid rgba(0, 0, 0, 0.1)',
-//       padding: '5px 5px 0 5px',
-//   }
-// }
+const user_list = window.sessionStorage.getItem(random_user_seed);
 
 export default class UserList extends Component {
   
   constructor(props) {
     super(props);
     this.state = {
-       loaded_data:[],
-       data_loaded:false
+       loaded_data:[], //variable to hold users returned from random users api
+       data_loaded:false //boolean to check if we have users returned from random users api.
     };
 
   }
 
   componentDidMount() {
-    var that = this;
-    //grab only 20 users and store in session storage to avoid repeated calls to random user api
+    //grab only 20 users from random users api and store in session storage to avoid repeated calls to random user api
     if (!user_list) {
-      const uri = `${config.ramdom_user_api}?${random_user_results_param}&${random_user_seed_param}&${random_user_country_param}&${random_user_fields_param}`;
-      fetch(uri)
+      this.fetchUsers()
+    }else{
+      this.setState({ loaded_data: JSON.parse(user_list) });
+      this.setState({ data_loaded: true});
+    }
+  }
+
+  fetchUsers = () => {
+    //build the random users api url
+    const uri = `${config.ramdom_user_api}?${random_user_results_param}&${random_user_seed_param}&${random_user_country_param}&${random_user_fields_param}`;
+    let that = this;
+    fetch(uri)
       .then(function (response) {
         if(response.ok) { 
           return response.json();
         }
         throw new Error('No response was received due to slow connection.');
       }).then(function (data) {
-        //console.log(JSON.stringify(data.results));
         that.setState({ loaded_data: data.results});
         that.setState({ data_loaded: true});
+        //store returned users in session storage
         sessionStorage.setItem(random_user_seed, JSON.stringify(data.results));
       }).catch(function(error) {
-        console.log('Problem with fetch operation: ', error.message);
+          console.log('Problem with fetch operation: ', error.message);
       });
-    }else{
-      that.setState({ loaded_data: JSON.parse(user_list) });
-      that.setState({ data_loaded: true});
-    }
   }
 
-
   render() {
-    let users = <li style={{ textAlign: 'center' }}>Loading...</li>;
+    let users = <li className="list">Loading...</li>;//diplay loading text while waiting for users to eb returned
     if(this.state.data_loaded){
-      users = this.state.loaded_data.map( data => {
-        sessionStorage.setItem(data.id.value, JSON.stringify(data));
+      users = this.state.loaded_data.map( data => { //loop over returned set of users
+        sessionStorage.setItem(data.id.value, JSON.stringify(data)); //store individual user in session storage to avoid another looping when retrieving the user
                 return (
-                  <UserListItem 
+                  //display list of users with a UserListItem component
+                  <UserListItem
                     key={data.id.value} 
                     user_id = {data.id.value} 
                     name={`${data.name.first} ${data.name.last}`} 
@@ -77,8 +73,6 @@ export default class UserList extends Component {
                     phone={data.phone} />
                 );
             } );
-    }else{
-      users = <li style={{ textAlign: 'center' }}>Users could not be loaded</li>;
     }
     return (
       <div className="App">

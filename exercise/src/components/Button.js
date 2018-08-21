@@ -12,7 +12,7 @@ const styles = {
 export default class Button extends Component {
   render() {
     return (
-      <button style={{...styles.button, ...this.props.style}} onClick={this.props.handleLoginButtonClick}>
+      <button className={this.props.class_name} style={{...styles.button, ...this.props.style}} onClick={this.props.handleLoginButtonClick}>
         {this.props.children}
       </button>
     );

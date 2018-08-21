@@ -13,7 +13,7 @@ ReactDOM.render((
     <div>
       <Route exact path="/" component={Landing}/>
       <Route path="/home" component={Home}/>
-      <Route path="/user-list"  component={UserList}/>
+      <Route path="/users-list"  component={UserList}/>
       <Route path={'/user-detail/:id'}  component={UserDetail} />
     </div>
   </BrowserRouter>

@@ -15,8 +15,8 @@ const styles = {
 export default class Badge extends Component {
   render() {
     return (
-      <div style={{...styles.badge, ...this.props.style}}>
-        {this.props.children}
+      <div className={this.props.class_name} style={{...styles.badge, ...this.props.style}}>
+        {this.props.initials}
       </div>
     );
   }
